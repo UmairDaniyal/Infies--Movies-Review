@@ -3,915 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>infies - Movie Reviews</title>
-    <!-- Google Font: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
+    <title>infies - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <!-- 
-      CSS Section 
-    -->
+    
+    <!-- Shared CSS (Identical across all pages) -->
     <style>
-        /* Define the color palette */
-        :root {
-            --bg-light: #ffe6a7;
-            --bg-dark: #432818;
-            --accent-medium: #99582a;
-            --accent-light: #bb9457;
-            --text-light: #ffe6a7;
-            --text-dark: #432818;
-            --heart-red: #e63946;
-        }
+        :root { --bg-body: #fdf6e3; --bg-card: #ffffff; --primary-dark: #432818; --primary-medium: #99582a; --accent-gold: #bb9457; --text-main: #2b1d12; --text-muted: #6d5d50; --heart-red: #e63946; --shadow-soft: 0 10px 30px rgba(67, 40, 24, 0.08); --shadow-hover: 0 20px 40px rgba(67, 40, 24, 0.15); }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        /* Header */
+        .site-header { background-color: rgba(67, 40, 24, 0.95); backdrop-filter: blur(12px); color: #fff; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .site-header h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--accent-gold); cursor: pointer; user-select: none; }
+        .main-nav ul { list-style: none; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .main-nav a { color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500; padding: 0.5rem 1rem; border-radius: 20px; transition: all 0.3s ease; }
+        .main-nav a:hover, .main-nav a.active { background-color: rgba(255, 255, 255, 0.15); color: #fff; }
 
-        /* Global Resets */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* Header & Nav */
-        .site-header {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .site-header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent-light);
-            cursor: pointer;
-        }
-
-        /* Navigation */
-        .main-nav ul {
-            list-style: none;
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .main-nav a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: 600;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .main-nav a:hover,
-        .main-nav a.active {
-            background-color: var(--accent-medium);
-            color: #fff;
-        }
-
-        /* Right Side of Header (Search + Auth) */
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-grow: 1;
-            justify-content: flex-end;
-            max-width: 600px;
-        }
-
-        /* Search Bar */
-        .search-container {
-            display: flex;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 0.25rem;
-            border: 1px solid var(--accent-light);
-            flex-grow: 1;
-            max-width: 300px;
-        }
-
-        .search-input {
-            background: transparent;
-            border: none;
-            color: var(--text-light);
-            padding: 0.5rem 1rem;
-            outline: none;
-            flex-grow: 1;
-            font-size: 1rem;
-        }
-
-        .search-input::placeholder {
-            color: rgba(255, 230, 167, 0.6);
-        }
-
-        .search-btn {
-            background-color: var(--accent-light);
-            color: var(--bg-dark);
-            border: none;
-            border-radius: 15px;
-            padding: 0 1rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .search-btn:hover {
-            background-color: var(--accent-medium);
-            color: #fff;
-        }
-
-        /* Auth Buttons */
-        .auth-btn {
-            background-color: #fff;
-            color: var(--bg-dark);
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background 0.2s;
-            font-size: 0.9rem;
-        }
-
-        .auth-btn:hover {
-            background-color: #f0f0f0;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-light);
-        }
-
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--accent-light);
-        }
+        /* Search & Auth */
+        .header-right { display: flex; align-items: center; gap: 1.5rem; flex-grow: 1; justify-content: flex-end; max-width: 600px; }
+        .search-container { display: flex; background: rgba(255, 255, 255, 0.1); border-radius: 50px; padding: 0.3rem 0.5rem; border: 1px solid rgba(187, 148, 87, 0.3); flex-grow: 1; max-width: 280px; }
+        .search-input { background: transparent; border: none; color: #fff; padding: 0.5rem 1rem; outline: none; flex-grow: 1; }
+        .search-input::placeholder { color: rgba(255, 255, 255, 0.5); }
+        .search-btn { background-color: var(--accent-gold); color: var(--primary-dark); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .auth-btn { background-color: #fff; color: var(--primary-dark); border: none; padding: 0.6rem 1.2rem; border-radius: 50px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+        .user-profile { display: flex; align-items: center; gap: 12px; color: #fff; font-size: 0.9rem; }
+        .user-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-gold); }
 
         /* Main Content */
-        .main-content {
-            width: 90%;
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 1rem;
-            flex-grow: 1;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--accent-medium);
-            border-bottom: 3px solid var(--accent-light);
-            padding-bottom: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Page Sections Logic */
-        .page-section {
-            display: none; /* Hide all sections by default */
-            animation: fadeIn 0.5s ease;
-        }
-
-        .page-section.active {
-            display: block; /* Show active section */
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Movie Grid */
-        .movie-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .movie-card {
-            background-color: #ffffff;
-            border: 1px solid var(--accent-light);
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(67, 40, 24, 0.1);
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            position: relative;
-        }
-
-        .movie-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(67, 40, 24, 0.2);
-        }
-
-        /* Favorite Button on Card */
-        .fav-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.8);
-            border: none;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 10;
-            transition: transform 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .fav-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .fav-btn i {
-            font-size: 1.2rem;
-            color: #ccc; /* Default gray */
-            transition: color 0.2s;
-        }
-
-        .fav-btn.active i {
-            color: var(--heart-red); /* Red when active */
-        }
-
-        .movie-card-image {
-            width: 100%;
-            aspect-ratio: 2/3;
-            object-fit: cover;
-            background-color: var(--bg-dark);
-        }
-
-        .movie-card-content {
-            padding: 1rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .movie-card-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--bg-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .movie-card-rating {
-            font-weight: 700;
-            color: var(--accent-medium);
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .movie-card-summary {
-            font-size: 0.85rem;
-            color: var(--text-dark);
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        /* About Page Styles */
-        .about-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            border: 1px solid var(--accent-light);
-        }
-        .about-container h2 { color: var(--accent-medium); margin-bottom: 1rem; }
-        .about-container p { margin-bottom: 1rem; }
-
-        /* Empty State for Favorites */
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: var(--accent-medium);
-            font-size: 1.2rem;
-            grid-column: 1 / -1;
-        }
+        .main-content { width: 90%; max-width: 1280px; margin: 2.5rem auto; padding: 1rem; flex-grow: 1; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: var(--primary-dark); position: relative; margin-bottom: 2.5rem; display: inline-block; }
+        .section-title::after { content: ''; position: absolute; left: 0; bottom: -5px; width: 60px; height: 4px; background-color: var(--accent-gold); border-radius: 2px; }
+        
+        .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 2rem; }
+        .movie-card { background-color: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-soft); overflow: hidden; transition: all 0.4s; cursor: pointer; display: flex; flex-direction: column; position: relative; }
+        .movie-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-hover); }
+        .movie-card-image { width: 100%; aspect-ratio: 2/3; object-fit: cover; background-color: var(--primary-dark); }
+        .fav-btn { position: absolute; top: 15px; right: 15px; background: rgba(255, 255, 255, 0.9); border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; opacity: 0; transition: all 0.3s; transform: translateY(-10px); }
+        .movie-card:hover .fav-btn { opacity: 1; transform: translateY(0); }
+        .fav-btn.active i { color: var(--heart-red); }
+        .movie-card-content { padding: 1.25rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .movie-card-title { font-size: 1.1rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 0.5rem; }
+        .movie-card-rating { font-weight: 600; color: var(--primary-medium); margin-bottom: 0.75rem; font-size: 0.9rem; }
+        .movie-card-summary { font-size: 0.85rem; color: var(--text-muted); -webkit-line-clamp: 3; -webkit-box-orient: vertical; display: -webkit-box; overflow: hidden; }
 
         /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: var(--bg-light);
-            margin: 2% auto;
-            padding: 2rem;
-            border: 2px solid var(--accent-light);
-            border-radius: 8px;
-            width: 90%;
-            max-width: 700px;
-            position: relative;
-        }
-
-        .modal-close {
-            color: var(--accent-medium);
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 2rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* AI Section */
-        .ai-section {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 2px dashed var(--accent-light);
-        }
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(43, 29, 18, 0.6); backdrop-filter: blur(8px); overflow-y: auto; padding: 20px; opacity: 0; transition: opacity 0.3s; }
+        .modal.show { opacity: 1; }
+        .modal-content { background-color: var(--bg-card); margin: 40px auto; padding: 2.5rem; border-radius: 24px; width: 100%; max-width: 750px; position: relative; transform: translateY(20px); transition: transform 0.3s; }
+        .modal.show .modal-content { transform: translateY(0); }
+        .modal-close { position: absolute; top: 20px; right: 25px; font-size: 2rem; cursor: pointer; color: var(--text-muted); }
+        .ai-section { margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); }
+        .ai-buttons { display: flex; gap: 1rem; margin: 1.5rem 0; }
+        .ai-btn { background: linear-gradient(135deg, var(--primary-medium), var(--primary-dark)); color: #fff; border: none; padding: 0.85rem 1.5rem; border-radius: 12px; cursor: pointer; flex: 1; }
+        .ai-result { background-color: #fffbf2; padding: 1.5rem; border-radius: 12px; border-left: 5px solid var(--accent-gold); margin-top: 1.5rem; display: none; }
+        .site-footer { background-color: var(--primary-dark); color: rgba(255,255,255,0.8); text-align: center; padding: 3rem 1rem; margin-top: auto; }
         
-        .ai-buttons { display: flex; gap: 1rem; margin: 1rem 0; }
-        
-        .ai-btn {
-            background-color: var(--accent-medium);
-            color: var(--text-light);
-            border: none;
-            padding: 0.75rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            flex: 1;
-            transition: 0.2s;
-        }
-        
-        .ai-btn:hover { background-color: var(--bg-dark); }
-        
-        .ai-result {
-            background-color: #fff8e7;
-            padding: 1rem;
-            border-radius: 6px;
-            border-left: 4px solid var(--accent-medium);
-            font-style: italic;
-            color: var(--bg-dark);
-            margin-top: 1rem;
-            display: none;
-        }
-        
-        .loading-spinner {
-            color: var(--accent-medium);
-            font-size: 1.2rem;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        /* Footer */
-        .site-footer {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            text-align: center;
-            padding: 2rem;
-            margin-top: auto;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .site-header { flex-direction: column; align-items: stretch; }
-            .header-left { flex-direction: column; gap: 1rem; text-align: center; }
-            .header-right { flex-direction: column; width: 100%; max-width: none; }
-            .search-container { max-width: 100%; width: 100%; }
-            .main-nav ul { justify-content: center; }
-        }
+        @media (hover: none) { .fav-btn { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px) { .site-header { flex-direction: column; } .header-right { width: 100%; justify-content: center; } .search-container { max-width: 100%; } .main-nav ul { justify-content: center; } }
     </style>
 </head>
 <body>
-
-    <!-- Header -->
     <header class="site-header">
         <div class="header-left">
-            <h1 onclick="navigateTo('home')">infies</h1>
+            <h1 onclick="window.location.href='index.html'">infies</h1>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="#" id="nav-home" class="active" onclick="handleNav(event, 'home')">Home</a></li>
-                    <li><a href="#" id="nav-favorites" onclick="handleNav(event, 'favorites')">My Favorites</a></li>
-                    <li><a href="#" id="nav-top100" onclick="handleNav(event, 'top100')">Top 100</a></li>
-                    <li><a href="#" id="nav-about" onclick="handleNav(event, 'about')">About</a></li>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="favorites.html">My Favorites</a></li>
+                    <li><a href="top100.html">Top 100</a></li>
+                    <li><a href="about.html">About</a></li>
                 </ul>
             </nav>
         </div>
-        
         <div class="header-right">
             <div class="search-container">
                 <input type="text" id="search-input" class="search-input" placeholder="Search movies...">
                 <button id="search-btn" class="search-btn"><i class="fas fa-search"></i></button>
             </div>
-            
-            <!-- Auth Section -->
             <div id="auth-container">
-                <button id="sign-in-btn" class="auth-btn">
-                    <i class="fab fa-google"></i> Sign In
-                </button>
+                <button id="sign-in-btn" class="auth-btn"><i class="fab fa-google"></i> Sign In</button>
                 <div id="user-info" class="user-profile" style="display: none;">
-                    <img id="user-avatar" src="" alt="Avatar" class="user-avatar">
+                    <img id="user-avatar" src="" class="user-avatar">
                     <span id="user-name"></span>
-                    <button id="sign-out-btn" class="auth-btn" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;">Sign Out</button>
+                    <button id="sign-out-btn" class="auth-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Sign Out</button>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="main-content">
-        
-        <!-- Movies Section (Shared for Home, Favorites, Top 100, Search) -->
-        <section id="movie-section" class="page-section active">
-            <h2 id="page-title" class="section-title">Trending Movies</h2>
-            <div id="movie-grid" class="movie-grid">
-                <!-- Movies injected here -->
-            </div>
-            <div id="loading-indicator" class="loading-spinner" style="display: none;">
-                <i class="fas fa-spinner fa-spin"></i> Loading...
-            </div>
-        </section>
-
-        <!-- About Section (Static) -->
-        <section id="about-section" class="page-section">
-            <h2 class="section-title">About Infies</h2>
-            <div class="about-container">
-                <p><strong>Welcome to Infies.</strong></p>
-                <p>We are a passionate community of movie lovers dedicated to bringing you the latest reviews, ratings, and insights into the world of cinema.</p>
-                <p>Our platform is built using the latest web technologies, providing a seamless and responsive experience for browsing your favorite films. Powered by the TMDB API, we ensure our data is always up to date.</p>
-                <p style="margin-top: 2rem; font-style: italic;">Designed with ❤️ using the "Coffee & Cream" palette.</p>
-            </div>
-        </section>
-
+        <h2 id="page-title" class="section-title">Trending Movies</h2>
+        <div id="movie-grid" class="movie-grid"></div>
+        <div id="loading-indicator" style="text-align: center; padding: 2rem; color: var(--accent-gold); font-size: 1.5rem;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
     </main>
 
-    <!-- Footer -->
-    <footer class="site-footer">
-        <p>&copy; 2025 infies. All rights reserved.</p>
-    </footer>
+    <footer class="site-footer"><p>&copy; 2025 infies. All rights reserved.</p></footer>
 
     <!-- Details Modal -->
     <div id="review-modal" class="modal">
         <div class="modal-content">
             <span class="modal-close">&times;</span>
-            <h2 id="modal-movie-title">Movie Title</h2>
-            <div id="modal-movie-rating">Rating: X/10</div>
-            <p id="modal-movie-full-review">Description goes here...</p>
-
-            <!-- Gemini AI Section -->
+            <h2 id="modal-movie-title">Title</h2>
+            <div id="modal-movie-rating">Rating</div>
+            <p id="modal-movie-full-review">Desc</p>
             <div class="ai-section">
-                <h3><i class="fas fa-robot"></i> Gemini AI Companion</h3>
+                <h3><i class="fas fa-sparkles" style="color: var(--accent-gold);"></i> Gemini AI</h3>
                 <div class="ai-buttons">
-                    <button id="btn-insight" class="ai-btn">✨ Insight</button>
-                    <button id="btn-roast" class="ai-btn">🔥 Roast</button>
+                    <button id="btn-insight" class="ai-btn">Insight</button>
+                    <button id="btn-roast" class="ai-btn">Roast</button>
                 </div>
                 <div id="ai-result" class="ai-result"></div>
             </div>
         </div>
     </div>
 
-    <!-- 
-      JavaScript Section 
-    -->
+    <!-- Script -->
     <script type="module">
-        // Import Firebase SDKs
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-        import { getFirestore, collection, doc, setDoc, deleteDoc, getDocs, query } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-        // --- Firebase Config ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyBuTMBfsN6pedPNCx_Zk_ylJRCJ429vErE",
-            authDomain: "infies.firebaseapp.com",
-            projectId: "infies",
-            storageBucket: "infies.firebasestorage.app",
-            messagingSenderId: "202130102273",
-            appId: "1:202130102273:web:4e6d7458c53a626dc40800",
-            measurementId: "G-46FQN93BVB"
-        };
-
+        // CONFIG
+        const firebaseConfig = { apiKey: "AIzaSyBuTMBfsN6pedPNCx_Zk_ylJRCJ429vErE", authDomain: "infies.firebaseapp.com", projectId: "infies", storageBucket: "infies.firebasestorage.app", messagingSenderId: "202130102273", appId: "1:202130102273:web:4e6d7458c53a626dc40800", measurementId: "G-46FQN93BVB" };
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const appId = 'infies'; 
-
-        // --- Auth Logic ---
-        let currentUser = null;
-        const signInBtn = document.getElementById("sign-in-btn");
-        const signOutBtn = document.getElementById("sign-out-btn");
-        const userInfo = document.getElementById("user-info");
-        const userAvatar = document.getElementById("user-avatar");
-        const userName = document.getElementById("user-name");
-
-        // Initial Auth
-        async function initAuth() {
-            // No initial auth actions required for custom config.
-            // Users will sign in via the "Sign In" button.
-        }
-        initAuth();
-
-        // Auth Listener
-        onAuthStateChanged(auth, (user) => {
-            currentUser = user;
-            if (user) {
-                signInBtn.style.display = "none";
-                userInfo.style.display = "flex";
-                userAvatar.src = user.photoURL || "https://placehold.co/32x32/99582a/fff?text=U";
-                userName.textContent = user.displayName || "User";
-                
-                // Refresh view if on favorites
-                const activeNav = document.querySelector('.main-nav a.active');
-                if (activeNav && activeNav.id === 'nav-favorites') {
-                    navigateTo('favorites');
-                } else {
-                    // Refresh grid to update heart icons
-                    const currentGrid = document.getElementById("movie-grid");
-                    if(currentGrid.children.length > 0) {
-                        // Just re-render hearts - simplified by re-fetching for now
-                    }
-                }
-            } else {
-                signInBtn.style.display = "flex";
-                userInfo.style.display = "none";
-                
-                // If on favorites page, show empty state
-                const activeNav = document.querySelector('.main-nav a.active');
-                if (activeNav && activeNav.id === 'nav-favorites') {
-                    navigateTo('favorites');
-                }
-            }
-        });
-
-        // Sign In Action
-        signInBtn.addEventListener("click", async () => {
-            const provider = new GoogleAuthProvider();
-            try {
-                await signInWithPopup(auth, provider);
-            } catch (error) {
-                console.error("Login failed:", error);
-                alert("Sign-in failed. Please try again.");
-            }
-        });
-
-        // Sign Out Action
-        signOutBtn.addEventListener("click", () => {
-            signOut(auth);
-        });
-
-
-        // --- TMDB & App Logic ---
-        
         const tmdbApiKey = '5bb309f5e9d4dee1e7429391cd699434';
-        const geminiApiKey = ""; 
-        const imgBaseUrl = 'https://image.tmdb.org/t/p/w500';
-        
-        const endpoints = {
-            home: `https://api.themoviedb.org/3/movie/popular?api_key=${tmdbApiKey}&language=en-US&page=1`,
-            top100: `https://api.themoviedb.org/3/movie/top_rated?api_key=${tmdbApiKey}&language=en-US&page=1`,
-            search: `https://api.themoviedb.org/3/search/movie?api_key=${tmdbApiKey}&language=en-US&include_adult=false&query=`
-        };
+        const geminiApiKey = "AIzaSyBJl8Iathk23xWy-1ifLHy9RdynX5esUZw"; 
 
-        // DOM Elements
-        const movieSection = document.getElementById('movie-section');
-        const aboutSection = document.getElementById('about-section');
-        const movieGrid = document.getElementById('movie-grid');
-        const pageTitle = document.getElementById('page-title');
-        const loadingIndicator = document.getElementById('loading-indicator');
-        const searchInput = document.getElementById('search-input');
-        const searchBtn = document.getElementById('search-btn');
-        
-        // Modal Elements
-        const modal = document.getElementById("review-modal");
-        const modalClose = document.querySelector(".modal-close");
-        const btnInsight = document.getElementById("btn-insight");
-        const btnRoast = document.getElementById("btn-roast");
-        const aiResult = document.getElementById("ai-result");
+        // Shared Logic
+        let currentUser = null;
         let currentMovieTitle = "";
+        
+        // AUTH
+        const signInBtn = document.getElementById("sign-in-btn");
+        const userInfo = document.getElementById("user-info");
+        onAuthStateChanged(auth, u => {
+            currentUser = u;
+            if(u) { signInBtn.style.display="none"; userInfo.style.display="flex"; document.getElementById("user-avatar").src=u.photoURL; document.getElementById("user-name").textContent=u.displayName; }
+            else { signInBtn.style.display="flex"; userInfo.style.display="none"; }
+            loadMovies(); // Reload to update hearts
+        });
+        signInBtn.onclick = () => signInWithPopup(auth, new GoogleAuthProvider());
+        document.getElementById("sign-out-btn").onclick = () => signOut(auth);
 
-        // Navigation Logic
-        window.handleNav = function(event, pageId) {
-            event.preventDefault();
-            document.querySelectorAll('.main-nav a').forEach(link => link.classList.remove('active'));
-            event.target.classList.add('active');
-            navigateTo(pageId);
+        // DATA LOADING (HOME)
+        async function loadMovies() {
+            const url = `https://api.themoviedb.org/3/movie/popular?api_key=${tmdbApiKey}&language=en-US&page=1`;
+            fetchAndRender(url);
+        }
+
+        async function fetchAndRender(url) {
+            document.getElementById("loading-indicator").style.display = "block";
+            const res = await fetch(url);
+            const data = await res.json();
+            const grid = document.getElementById("movie-grid");
+            grid.innerHTML = "";
+            document.getElementById("loading-indicator").style.display = "none";
+            
+            // Check favorites
+            let userFavs = new Set();
+            if(currentUser) {
+                const snap = await getDocs(collection(db, 'artifacts', 'infies', 'users', currentUser.uid, 'favorites'));
+                snap.forEach(d => userFavs.add(d.data().id));
+            }
+
+            data.results.forEach(m => createCard(m, userFavs.has(m.id)));
+        }
+
+        function createCard(m, isFav) {
+            const el = document.createElement("article");
+            el.className = "movie-card";
+            el.innerHTML = `
+                <img src="https://image.tmdb.org/t/p/w500${m.poster_path}" class="movie-card-image" onerror="this.src='https://placehold.co/300x450?text=No+Image'">
+                <button class="fav-btn ${isFav?'active':''}"><i class="${isFav?'fas':'far'} fa-heart"></i></button>
+                <div class="movie-card-content">
+                    <h3 class="movie-card-title">${m.title}</h3>
+                    <div class="movie-card-rating"><i class="fas fa-star"></i> ${m.vote_average.toFixed(1)}/10</div>
+                    <p class="movie-card-summary">${m.overview}</p>
+                </div>`;
+            
+            // Heart Click
+            el.querySelector(".fav-btn").onclick = async (e) => {
+                e.stopPropagation();
+                if(!currentUser) return alert("Sign in to favorite!");
+                const ref = doc(db, 'artifacts', 'infies', 'users', currentUser.uid, 'favorites', `movie_${m.id}`);
+                const btn = e.currentTarget;
+                if(btn.classList.contains("active")) { await deleteDoc(ref); btn.classList.remove("active"); btn.querySelector("i").className="far fa-heart"; }
+                else { await setDoc(ref, {id:m.id, title:m.title, poster_path:m.poster_path, vote_average:m.vote_average, overview:m.overview}); btn.classList.add("active"); btn.querySelector("i").className="fas fa-heart"; }
+            };
+            
+            // Card Click (Modal)
+            el.onclick = (e) => {
+                if(e.target.closest(".fav-btn")) return;
+                currentMovieTitle = m.title;
+                document.getElementById("modal-movie-title").textContent = m.title;
+                document.getElementById("modal-movie-rating").textContent = `Rating: ${m.vote_average.toFixed(1)}/10`;
+                document.getElementById("modal-movie-full-review").textContent = m.overview;
+                document.getElementById("ai-result").style.display = "none";
+                const modal = document.getElementById("review-modal");
+                modal.style.display = "block";
+                setTimeout(()=>modal.classList.add("show"), 10);
+            };
+            document.getElementById("movie-grid").appendChild(el);
+        }
+
+        // Search Logic
+        const searchBtn = document.getElementById("search-btn");
+        const searchInp = document.getElementById("search-input");
+        function doSearch() {
+            const q = searchInp.value.trim();
+            if(q) fetchAndRender(`https://api.themoviedb.org/3/search/movie?api_key=${tmdbApiKey}&query=${encodeURIComponent(q)}`);
+        }
+        searchBtn.onclick = doSearch;
+        searchInp.onkeypress = (e) => { if(e.key==='Enter') doSearch(); };
+
+        // Modal Logic
+        const modal = document.getElementById("review-modal");
+        document.querySelector(".modal-close").onclick = () => { modal.classList.remove("show"); setTimeout(()=>modal.style.display="none", 300); };
+        window.onclick = (e) => { if(e.target==modal) document.querySelector(".modal-close").click(); };
+
+        // AI Logic
+        async function askAI(prompt) {
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
+                method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})
+            });
+            const d = await res.json();
+            return d.candidates?.[0]?.content?.parts?.[0]?.text || "Error";
+        }
+        document.getElementById("btn-insight").onclick = async () => {
+            const r = document.getElementById("ai-result"); r.style.display="block"; r.innerHTML="Thinking...";
+            r.innerHTML = (await askAI(`Give me a sophisticated reason to watch "${currentMovieTitle}" in 1 sentence.`)).replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+        };
+        document.getElementById("btn-roast").onclick = async () => {
+            const r = document.getElementById("ai-result"); r.style.display="block"; r.innerHTML="Cooking...";
+            r.innerHTML = (await askAI(`Roast the movie "${currentMovieTitle}" in 1 funny sentence.`)).replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
         };
 
-        // Navigation Global for HTML access
-        window.navigateTo = navigateTo;
-
-        function navigateTo(pageId) {
-            movieSection.style.display = 'none';
-            aboutSection.style.display = 'none';
-
-            if (pageId === 'about') {
-                aboutSection.style.display = 'block';
-                return;
-            }
-
-            movieSection.style.display = 'block';
-            
-            switch(pageId) {
-                case 'home':
-                    pageTitle.textContent = "Trending Movies";
-                    fetchMovies(endpoints.home);
-                    break;
-                case 'favorites':
-                    pageTitle.textContent = "My Favorites";
-                    fetchFavorites(); // Logic for Firestore
-                    break;
-                case 'top100':
-                    pageTitle.textContent = "Top Rated Movies";
-                    fetchMovies(endpoints.top100);
-                    break;
-            }
-        }
-
-        // --- Favorites Logic (Firestore) ---
-
-        async function fetchFavorites() {
-            movieGrid.innerHTML = '';
-            
-            if (!currentUser) {
-                movieGrid.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-lock" style="font-size: 3rem; margin-bottom: 1rem;"></i><br>
-                        Please sign in to view your favorites.
-                    </div>`;
-                return;
-            }
-
-            loadingIndicator.style.display = 'block';
-            
-            try {
-                const favoritesRef = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'favorites');
-                const snapshot = await getDocs(favoritesRef);
-                
-                loadingIndicator.style.display = 'none';
-                
-                if (snapshot.empty) {
-                    movieGrid.innerHTML = `
-                        <div class="empty-state">
-                            <i class="far fa-heart" style="font-size: 3rem; margin-bottom: 1rem;"></i><br>
-                            You haven't saved any movies yet.
-                        </div>`;
-                    return;
-                }
-
-                const favorites = [];
-                snapshot.forEach(doc => favorites.push(doc.data()));
-                
-                // Render directly
-                favorites.forEach(movie => createMovieCard(movie, true));
-
-            } catch (error) {
-                console.error("Error fetching favorites:", error);
-                loadingIndicator.style.display = 'none';
-                movieGrid.innerHTML = '<p style="color: red;">Error loading favorites.</p>';
-            }
-        }
-
-        async function toggleFavorite(movie, btnElement) {
-            if (!currentUser) {
-                alert("Please sign in to save favorites!");
-                return;
-            }
-
-            const docId = `movie_${movie.id}`;
-            const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'favorites', docId);
-            const icon = btnElement.querySelector('i');
-            
-            try {
-                if (btnElement.classList.contains('active')) {
-                    // Remove
-                    await deleteDoc(docRef);
-                    btnElement.classList.remove('active');
-                    icon.classList.remove('fas');
-                    icon.classList.add('far');
-                    
-                    // If we are on the favorites page, remove the card instantly
-                    const activeNav = document.querySelector('.main-nav a.active');
-                    if (activeNav && activeNav.id === 'nav-favorites') {
-                         btnElement.closest('.movie-card').remove();
-                         if (movieGrid.children.length === 0) {
-                             movieGrid.innerHTML = `<div class="empty-state">You haven't saved any movies yet.</div>`;
-                         }
-                    }
-
-                } else {
-                    // Add
-                    const movieData = {
-                        id: movie.id,
-                        title: movie.title,
-                        poster_path: movie.poster_path,
-                        vote_average: movie.vote_average,
-                        overview: movie.overview
-                    };
-                    await setDoc(docRef, movieData);
-                    btnElement.classList.add('active');
-                    icon.classList.remove('far');
-                    icon.classList.add('fas');
-                }
-            } catch (error) {
-                console.error("Error toggling favorite:", error);
-                alert("Could not update favorite.");
-            }
-        }
-        
-
-        // --- Standard Fetch Logic ---
-
-        async function fetchMovies(url) {
-            movieGrid.innerHTML = ''; 
-            loadingIndicator.style.display = 'block';
-
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                loadingIndicator.style.display = 'none';
-                
-                if (data.results.length === 0) {
-                    movieGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No movies found.</p>';
-                    return;
-                }
-
-                let userFavIds = new Set();
-                if (currentUser) {
-                     const favoritesRef = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'favorites');
-                     const snapshot = await getDocs(favoritesRef);
-                     snapshot.forEach(doc => userFavIds.add(doc.data().id));
-                }
-
-                data.results.forEach(movie => {
-                    const isFav = userFavIds.has(movie.id);
-                    createMovieCard(movie, isFav);
-                });
-                
-            } catch (error) {
-                console.error(error);
-                loadingIndicator.style.display = 'none';
-                movieGrid.innerHTML = '<p style="color: red;">Error loading movies.</p>';
-            }
-        }
-
-        function createMovieCard(movie, isFavorite = false) {
-            const card = document.createElement('article');
-            card.classList.add('movie-card');
-            
-            const posterSrc = movie.poster_path 
-                ? `${imgBaseUrl}${movie.poster_path}` 
-                : 'https://placehold.co/300x450/432818/ffe6a7?text=No+Image';
-
-            // Favorite Button Logic
-            const favBtn = document.createElement('button');
-            favBtn.className = `fav-btn ${isFavorite ? 'active' : ''}`;
-            favBtn.innerHTML = `<i class="${isFavorite ? 'fas' : 'far'} fa-heart"></i>`;
-            favBtn.onclick = (e) => {
-                e.stopPropagation(); // Prevent modal open
-                toggleFavorite(movie, favBtn);
-            };
-
-            card.innerHTML = `
-                <img src="${posterSrc}" alt="${movie.title}" class="movie-card-image">
-                <div class="movie-card-content">
-                    <h3 class="movie-card-title">${movie.title}</h3>
-                    <div class="movie-card-rating">
-                        <i class="fas fa-star"></i> ${movie.vote_average.toFixed(1)}/10
-                    </div>
-                    <p class="movie-card-summary">${movie.overview || "No description available."}</p>
-                </div>
-            `;
-
-            card.appendChild(favBtn);
-
-            // Modal Click
-            card.addEventListener('click', (event) => {
-                if (event.target.closest('.fav-btn')) return; // Double check
-                
-                document.getElementById("modal-movie-title").textContent = movie.title;
-                document.getElementById("modal-movie-rating").textContent = `Rating: ${movie.vote_average.toFixed(1)}/10`;
-                document.getElementById("modal-movie-full-review").textContent = movie.overview || "No description available.";
-                
-                currentMovieTitle = movie.title;
-                aiResult.style.display = 'none';
-                aiResult.textContent = '';
-                
-                modal.style.display = "block";
-            });
-
-            movieGrid.appendChild(card);
-        }
-
-        // --- Search Logic ---
-        document.getElementById('search-btn').addEventListener('click', executeSearch);
-        document.getElementById('search-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') executeSearch();
-        });
-
-        function executeSearch() {
-            const query = document.getElementById('search-input').value.trim();
-            if (!query) return;
-            document.querySelectorAll('.main-nav a').forEach(link => link.classList.remove('active'));
-            navigateTo('search'); // Custom ID for flow
-            pageTitle.textContent = `Search Results for "${query}"`;
-            fetchMovies(endpoints.search + encodeURIComponent(query));
-        }
-
-        // --- Modal Close ---
-        modalClose.addEventListener("click", () => modal.style.display = "none");
-        window.addEventListener("click", (e) => {
-            if (e.target == modal) modal.style.display = "none";
-        });
-
-        // --- AI Functionality ---
-        async function callGemini(prompt) {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${geminiApiKey}`;
-            const payload = { contents: [{ parts: [{ text: prompt }] }] };
-            
-            try {
-                const res = await fetch(url, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-                return data.candidates?.[0]?.content?.parts?.[0]?.text || "No response.";
-            } catch (e) {
-                console.error(e);
-                return "AI Service Unavailable.";
-            }
-        }
-
-        btnInsight.addEventListener('click', async () => {
-            if (!currentMovieTitle) return;
-            aiResult.style.display = 'block';
-            aiResult.innerHTML = 'Loading insight...';
-            const prompt = `Give me a professional critic's reason to watch "${currentMovieTitle}" in one sentence.`;
-            const text = await callGemini(prompt);
-            aiResult.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        });
-
-        btnRoast.addEventListener('click', async () => {
-            if (!currentMovieTitle) return;
-            aiResult.style.display = 'block';
-            aiResult.innerHTML = 'Cooking roast...';
-            const prompt = `Roast the movie "${currentMovieTitle}" in one short, funny sentence.`;
-            const text = await callGemini(prompt);
-            aiResult.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        });
-        
-        // Initial Load
-        navigateTo('home');
-
+        // Init
+        loadMovies();
     </script>
 </body>
 </html>

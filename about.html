@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>infies - About</title>
+    <!-- [Insert SAME CSS as index.html here] -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --bg-body: #fdf6e3; --bg-card: #ffffff; --primary-dark: #432818; --primary-medium: #99582a; --accent-gold: #bb9457; --text-main: #2b1d12; --text-muted: #6d5d50; --heart-red: #e63946; --shadow-soft: 0 10px 30px rgba(67, 40, 24, 0.08); --shadow-hover: 0 20px 40px rgba(67, 40, 24, 0.15); }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+        .site-header { background-color: rgba(67, 40, 24, 0.95); backdrop-filter: blur(12px); color: #fff; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .site-header h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--accent-gold); cursor: pointer; user-select: none; }
+        .main-nav ul { list-style: none; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .main-nav a { color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500; padding: 0.5rem 1rem; border-radius: 20px; transition: all 0.3s ease; }
+        .main-nav a:hover, .main-nav a.active { background-color: rgba(255, 255, 255, 0.15); color: #fff; }
+        .header-right { display: flex; align-items: center; gap: 1.5rem; flex-grow: 1; justify-content: flex-end; max-width: 600px; }
+        .auth-btn { background-color: #fff; color: var(--primary-dark); border: none; padding: 0.6rem 1.2rem; border-radius: 50px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+        .user-profile { display: flex; align-items: center; gap: 12px; color: #fff; font-size: 0.9rem; }
+        .user-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-gold); }
+        .main-content { width: 90%; max-width: 1280px; margin: 2.5rem auto; padding: 1rem; flex-grow: 1; }
+        .about-container { background: var(--bg-card); padding: 3rem; border-radius: 20px; box-shadow: var(--shadow-soft); max-width: 800px; margin: 0 auto; text-align: center; }
+        .about-container h2 { color: var(--primary-medium); margin-bottom: 1.5rem; font-family: 'Playfair Display', serif; }
+        .about-container p { margin-bottom: 1.5rem; font-size: 1.1rem; color: var(--text-muted); }
+        .site-footer { background-color: var(--primary-dark); color: rgba(255,255,255,0.8); text-align: center; padding: 3rem 1rem; margin-top: auto; }
+        @media (max-width: 768px) { .site-header { flex-direction: column; } .header-right { width: 100%; justify-content: center; } .main-nav ul { justify-content: center; } }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-left">
+            <h1 onclick="window.location.href='index.html'">infies</h1>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="favorites.html">My Favorites</a></li>
+                    <li><a href="top100.html">Top 100</a></li>
+                    <li><a href="about.html" class="active">About</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="header-right">
+            <div id="auth-container">
+                <button id="sign-in-btn" class="auth-btn"><i class="fab fa-google"></i> Sign In</button>
+                <div id="user-info" class="user-profile" style="display: none;">
+                    <img id="user-avatar" src="" class="user-avatar">
+                    <span id="user-name"></span>
+                    <button id="sign-out-btn" class="auth-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Sign Out</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section id="about-section">
+            <div class="about-container">
+                <h2>About Infies</h2>
+                <p>Welcome to <strong>Infies</strong>, a modern sanctuary for cinema enthusiasts.</p>
+                <p>We are a passionate community dedicated to curating the finest movie experiences. Whether you're looking for the latest blockbusters, timeless classics, or hidden gems, our platform brings the world of cinema to your fingertips.</p>
+                <p>Powered by the TMDB API and enhanced with Gemini AI, we provide real-time data, personalized insights, and a seamless browsing experience.</p>
+                <p style="margin-top: 3rem; font-size: 0.9rem; opacity: 0.8;">Designed with precision & passion.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer"><p>&copy; 2025 infies. All rights reserved.</p></footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyBuTMBfsN6pedPNCx_Zk_ylJRCJ429vErE", authDomain: "infies.firebaseapp.com", projectId: "infies", storageBucket: "infies.firebasestorage.app", messagingSenderId: "202130102273", appId: "1:202130102273:web:4e6d7458c53a626dc40800", measurementId: "G-46FQN93BVB" };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        
+        const signInBtn = document.getElementById("sign-in-btn");
+        const userInfo = document.getElementById("user-info");
+        onAuthStateChanged(auth, u => {
+            if(u) { signInBtn.style.display="none"; userInfo.style.display="flex"; document.getElementById("user-avatar").src=u.photoURL; document.getElementById("user-name").textContent=u.displayName; }
+            else { signInBtn.style.display="flex"; userInfo.style.display="none"; }
+        });
+        signInBtn.onclick = () => signInWithPopup(auth, new GoogleAuthProvider());
+        document.getElementById("sign-out-btn").onclick = () => signOut(auth);
+    </script>
+</body>
+</html>
