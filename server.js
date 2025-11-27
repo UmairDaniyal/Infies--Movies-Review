@@ -3,30 +3,34 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 1. Serve Static Files (HTML, CSS, JS)
-// This tells Node to look in the current folder for your HTML files
+// Serve static files (HTML, CSS, JS, Images) from the current directory
+// This allows the browser to load your .html files and any assets
 app.use(express.static(__dirname));
 
-// 2. Define Routes for your 4 Pages
-// This ensures that going to /about loads about.html, etc.
+// --- Define Routes for your 4 Pages ---
+// These ensure that clean URLs (without .html) work correctly
 
+// Home Page Route (http://localhost:3000/)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Favorites Page Route (http://localhost:3000/favorites)
 app.get('/favorites', (req, res) => {
     res.sendFile(path.join(__dirname, 'favorites.html'));
 });
 
+// Top 100 Page Route (http://localhost:3000/top100)
 app.get('/top100', (req, res) => {
     res.sendFile(path.join(__dirname, 'top100.html'));
 });
 
+// About Page Route (http://localhost:3000/about)
 app.get('/about', (req, res) => {
     res.sendFile(path.join(__dirname, 'about.html'));
 });
 
-// 3. Start the Server
+// --- Start the Server ---
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
     console.log('Press Ctrl+C to stop the server');
